@@ -7,7 +7,6 @@ Note: Work in progress
 Temperature controller for waterbed heater. 
 
 
-
 * Temperature controller on ATMega328P (Arduino)
 * Dallas D18B20 Temperature sensors
 * Brett Beauregard's PID Controller Library
@@ -27,6 +26,17 @@ To Do:
 # Original Controller
 
 The original waterbed controller was properly maintaining a constant temperature. Inspection of thermostat's internals showed that the controller was purely electromechanical, so no surprise no accurate & stable regulation could be obtained.
+
+
+Original Controller:
+
+![Original Controller](https://github.com/fvdpol/Waterbed-Controller/blob/master/images/IMG_0126.jpg?raw=true)
+
+
+![Inside View](https://github.com/fvdpol/Waterbed-Controller/blob/master/images/IMG_0128.jpg?raw=true)
+
+
+![Inside View](https://github.com/fvdpol/Waterbed-Controller/blob/master/images/IMG_0130.jpg?raw=true)
 
 
 
