@@ -1,0 +1,12 @@
+
+{
+    "HOST": "192.168.1.51",
+    "PORT": 1883,
+    "KEEPALIVE": 10,
+    "USERNAME": "",
+    "PASSWORD": "",
+    "CA_CERTS": "",
+    "DEVICE_ID": "10ddb1b002c2",
+    "DEVICE_NAME": "waterbed-controller",
+    "TOPIC": "homie"
+}
