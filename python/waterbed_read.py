@@ -35,7 +35,12 @@ def open_esp_connection():
             return s
         except socket.error as e:
             print ("socket error ", format(e))
-            time.sleep(5)
+            time.sleep(15)
+
+            # do not try to reconnect as this does not work reliably, but wrap
+            # this process in a monitor and have it restarted
+            raise
+
 
 
 
@@ -44,7 +49,7 @@ def buffered_readLine(socket):
     line = ""
     while True:
         # receive single character
-        socket.settimeout(30)
+        socket.settimeout(60)
         char=""
         try:
             rcv = socket.recv(1) 
@@ -55,6 +60,11 @@ def buffered_readLine(socket):
             print (e)
             # reconnect...
             # should only reconnect in case of network related errors....
+
+            # do not try to reconnect as this does not work reliably, but wrap
+            # this process in a monitor and have it restarted
+            raise
+
             
             time.sleep(5) 
             socket = open_esp_connection()
@@ -70,7 +80,7 @@ def buffered_readLine(socket):
             # ignore any control characters
             if (char >= " "):        
                 line+=char
-        elif char == "\n":
+        elif char == "\n" or char == "\r":
             break
 
     return line
@@ -117,27 +127,27 @@ def main():
 
             # wrap in exception handler as sometimes the 2nd arguments is not convertable to a float/int
             try:
-                if (field == "Sensor 1"):
+                if (field == "Sensor 1" and len(value) == 5):
                     fval = float(value)
                     if (fval > 10.0 and fval < 40.0):
                         NodeSensor1Temperature.setProperty("temperature").send(fval)
 
-                elif (field == "Sensor 2"):
+                elif (field == "Sensor 2" and len(value) == 5):
                     fval = float(value)
                     if (fval > 10.0 and fval < 40.0):
                         NodeSensor2Temperature.setProperty("temperature").send(fval)
 
-                elif (field == "Sensor 3"):
+                elif (field == "Sensor 3" and len(value) == 5):
                     fval = float(value)
                     if (fval > 10.0 and fval < 40.0):
                         NodeSensor3Temperature.setProperty("temperature").send(fval)
 
-                elif (field == "PID Measured"):
+                elif (field == "PID Measured" and len(value) == 5):
                     fval = float(value)
                     if (fval > 10.0 and fval < 40.0):
                         NodePIDMeasured.setProperty("measured").send(fval)
 
-                elif (field == "PID Setpoint"):
+                elif (field == "PID Setpoint" and len(value) == 5):
                     fval = float(value)
                     if (fval > 10.0 and fval < 40.0):
                         NodePIDSetpoint.setProperty("setpoint").send(fval)
@@ -176,7 +186,6 @@ def main():
 
             except Exception as e:
                         print (e)
-
 
 
 
