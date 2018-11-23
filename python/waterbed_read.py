@@ -164,6 +164,16 @@ def main():
                         # as the previous value is known
                         NodeElectricityEnergy.setProperty("energy").send(float(value))
 
+                elif (field == "RAM"):
+                    ival = int(value)
+                    if (ival >= 0):
+                      NodeDeviceFreeRAM.setProperty("freeram").send(ival)
+
+                elif (field == "Uptime"):
+                    ival = int(value)
+                    if (ival >= 0):
+                      NodeDeviceUptime.setProperty("uptime").send(ival)
+
             except Exception as e:
                         print (e)
 
@@ -192,6 +202,10 @@ NodePIDMode     = Homie.Node("pid-controller", "mode")
 # power/energy
 NodeElectricityPower = Homie.Node("electricity", "power")
 NodeElectricityEnergy = Homie.Node("electricity", "energy")
+
+# device status
+NodeDeviceFreeRAM = Homie.Node("device", "freeram")
+NodeDeviceUptime = Homie.Node("device", "uptime")
 
 
 Homie.setFirmware("waterbed-controller", "1.0.0")
@@ -235,7 +249,14 @@ NodeElectricityEnergy.advertise("unit")
 NodeElectricityEnergy.advertise("datatype")
 
 
-#humidityNode.advertise("humidity")
+NodeDeviceFreeRAM.advertise("freeram")
+NodeDeviceFreeRAM.advertise("unit")
+NodeDeviceFreeRAM.advertise("datatype")
+
+NodeDeviceUptime.advertise("uptime")
+NodeDeviceUptime.advertise("unit")
+NodeDeviceUptime.advertise("datatype")
+
 print ("dbg: homie setup()...")
 Homie.setup()
 #time.sleep(2)   # give homie some time to connect (why not event based?)
@@ -266,12 +287,15 @@ NodePIDMode.setProperty("datatype").send("boolean")
 NodeElectricityPower.setProperty("unit").send("W")
 NodeElectricityPower.setProperty("datatype").send("float")
 
-
 NodeElectricityEnergy.setProperty("unit").send("Wh")
 NodeElectricityEnergy.setProperty("datatype").send("float")
 
 
+NodeDeviceFreeRAM.setProperty("unit").send("bytes")
+NodeDeviceFreeRAM.setProperty("datatype").send("integer")
 
+NodeDeviceUptime.setProperty("unit").send("s")
+NodeDeviceUptime.setProperty("datatype").send("integer")
 
 # FIXME: we should handle reconnects, network outage etc.
 print ("opening socket...")
